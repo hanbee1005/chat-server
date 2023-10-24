@@ -4,6 +4,8 @@ import express, { Express, Request, Response } from 'express';
 import 'reflect-metadata';
 import {AppDataSource} from "@/config/data-source.config";
 import {SocketService} from "@/service/socket.service";
+import {Member} from "@/entity/member.entity";
+import {MemberRepository} from "@/repository/member.repository";
 
 const app: Express = express()
     .use(express.json())
@@ -14,8 +16,16 @@ const port = 8080;
 
 const httpServer = http.createServer(app);
 
+const memberRepository = new MemberRepository();
+
 app.get('/', (req: Request, res: Response) => {
     res.send('Typescript + Node.js + Express Server');
+});
+
+app.get('/users', async (req: Request, res: Response) => {
+    const members = await memberRepository.findAll();
+    console.log(members)
+    res.send(members);
 });
 
 // typeorm 초기화 후
@@ -32,4 +42,11 @@ AppDataSource.initialize().then(() => {
     httpServer.listen(port, () => {
         console.log(`[server]: Server is running at <https://localhost>:${port}`);
     });
+
+    // 초기 member 생성
+    memberRepository.count().then(count => {
+        if (count == 0) {
+            memberRepository.saveAll([new Member('choi'), new Member('son'), new Member('kang')]);
+        }
+    })
 });

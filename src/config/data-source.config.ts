@@ -1,4 +1,5 @@
-import {DataSource} from "typeorm";
+import {DataSource, DataSourceOptions} from "typeorm";
+import {Member} from "@/entity/member.entity";
 
 export const AppDataSource = new DataSource({
     type: 'mysql',
@@ -8,5 +9,6 @@ export const AppDataSource = new DataSource({
     password: '1234',
     database: 'chat',
     synchronize: true,
-    logging: true
-});
+    logging: true,
+    entities: [Member]
+} as DataSourceOptions);

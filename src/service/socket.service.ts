@@ -1,5 +1,7 @@
 import {Server} from "socket.io";
 
+const sessions = new Map<string, number>();
+
 export const SocketService = (
     ...args: ConstructorParameters<typeof Server>
 ) => {
@@ -9,5 +11,11 @@ export const SocketService = (
 
     io.on('connection', socket => {
         console.log(`[connection] ${socket.id}`)
+
+        // login: 소캣 연결 후 user id 연결
+        socket.on('login', (userId: number) => {
+            console.log(`user ${userId} connect socket ${socket.id}`)
+            sessions.set(socket.id, userId)
+        })
     })
 }
