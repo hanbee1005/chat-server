@@ -3,6 +3,7 @@ import cors from 'cors';
 import express, { Express, Request, Response } from 'express';
 import 'reflect-metadata';
 import {AppDataSource} from "@/config/data-source.config";
+import {SocketService} from "@/service/socket.service";
 
 const app: Express = express()
     .use(express.json())
@@ -19,6 +20,14 @@ app.get('/', (req: Request, res: Response) => {
 
 // typeorm 초기화 후
 AppDataSource.initialize().then(() => {
+    // http server 를 socket.io server 로 upgrade
+    SocketService(httpServer, {
+        cors: {
+            origin: '*',
+            methods: '*',
+        },
+    });
+
     // http server 연결
     httpServer.listen(port, () => {
         console.log(`[server]: Server is running at <https://localhost>:${port}`);
