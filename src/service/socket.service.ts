@@ -17,5 +17,20 @@ export const SocketService = (
             console.log(`user ${userId} connect socket ${socket.id}`)
             sessions.set(socket.id, userId)
         })
+
+        // room:create - 방 만들기
+        socket.on('room:create', (roomName: string) => {
+
+        })
+
+        // room:leave - 방에서 나가기
+        socket.on('room:leave', (roomId: number) => {
+
+        })
+
+        // chat:send - 채팅 보내기
+        socket.on('chat:send', (message: string) => {
+
+        })
     })
 }

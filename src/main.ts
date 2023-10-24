@@ -28,6 +28,10 @@ app.get('/users', async (req: Request, res: Response) => {
     res.send(members);
 });
 
+app.get('/rooms', async (req: Request, res: Response) => {
+
+});
+
 // typeorm 초기화 후
 AppDataSource.initialize().then(() => {
     // http server 를 socket.io server 로 upgrade
