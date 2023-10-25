@@ -25,6 +25,11 @@ export const SocketService = (
 
         })
 
+        // room:list - 방 목록 조회
+        socket.on('room:list', async () => {
+        
+        })
+
         // room:leave - 방에서 나가기
         socket.on('room:leave', (roomId: number) => {
 

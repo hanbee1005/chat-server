@@ -1,5 +1,6 @@
 import {DataSource, DataSourceOptions} from "typeorm";
 import {Member} from "@/entity/member.entity";
+import { Chatroom } from "@/entity/chatroom.entity";
 
 export const AppDataSource = new DataSource({
     type: 'mysql',
@@ -10,5 +11,5 @@ export const AppDataSource = new DataSource({
     database: 'chat',
     synchronize: true,
     logging: true,
-    entities: [Member]
+    entities: [Member, Chatroom]
 } as DataSourceOptions);
