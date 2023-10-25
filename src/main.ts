@@ -12,7 +12,7 @@ const app: Express = express()
     .use(cors())
     .use(express.urlencoded({ extended: true }));
 
-const port = 8080;
+const port = process.env.port || 8080;
 
 const httpServer = http.createServer(app);
 
@@ -22,7 +22,7 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Typescript + Node.js + Express Server');
 });
 
-app.get('/users', async (req: Request, res: Response) => {
+app.get('/user', async (req: Request, res: Response) => {
     const members = await memberRepository.findAll();
     console.log(members)
     res.send(members);

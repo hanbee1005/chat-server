@@ -1,4 +1,5 @@
 import {Server} from "socket.io";
+import { RedisAdapter } from "./redis.adapter";
 
 const sessions = new Map<string, number>();
 
@@ -8,6 +9,7 @@ export const SocketService = (
 
     // socket server 생성
     const io = new Server(...args);
+    RedisAdapter(io);  // socket.io redis-adapter 연결
 
     io.on('connection', socket => {
         console.log(`[connection] ${socket.id}`)
