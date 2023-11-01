@@ -11,6 +11,9 @@ export const SocketService = (
     const io = new Server(...args);
     RedisAdapter(io);  // socket.io redis-adapter 연결
 
+    const { createRoom, selectRooms, leaveRoom } = require('../handler/RoomHandler')(io);
+    const { sendToRoom } = require('../handler/ChatHandler')(io);
+
     io.on('connection', socket => {
         console.log(`[connection] ${socket.id}`)
 
@@ -21,23 +24,15 @@ export const SocketService = (
         })
 
         // room:create - 방 만들기
-        socket.on('room:create', (roomName: string) => {
-
-        })
+        socket.on('room:create', createRoom);
 
         // room:list - 방 목록 조회
-        socket.on('room:list', async () => {
-        
-        })
+        socket.on('room:list', selectRooms)
 
         // room:leave - 방에서 나가기
-        socket.on('room:leave', (roomId: number) => {
-
-        })
+        socket.on('room:leave', leaveRoom)
 
         // chat:send - 채팅 보내기
-        socket.on('chat:send', (message: string) => {
-
-        })
+        socket.on('chat:send', sendToRoom)
     })
 }
