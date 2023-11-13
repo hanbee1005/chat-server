@@ -14,6 +14,11 @@ export const SocketService = (
     const { createRoom, selectRooms, leaveRoom } = require('../handler/RoomHandler')(io);
     const { sendToRoom } = require('../handler/ChatHandler')(io);
 
+    io.use((socket, next) => {
+        // 여기서 로그인 및 세션 확인...?
+        next();
+    });
+
     io.on('connection', socket => {
         console.log(`[connection] ${socket.id}`)
 
@@ -21,7 +26,7 @@ export const SocketService = (
         socket.on('login', (userId: number) => {
             console.log(`user ${userId} connect socket ${socket.id}`)
             sessions.set(socket.id, userId)
-        })
+        });
 
         // room:create - 방 만들기
         socket.on('room:create', createRoom);

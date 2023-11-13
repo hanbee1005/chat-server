@@ -22,7 +22,7 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Typescript + Node.js + Express Server');
 });
 
-app.get('/user', async (req: Request, res: Response) => {
+app.get('/users', async (req: Request, res: Response) => {
     const members = await memberRepository.findAll();
     console.log(members)
     res.send(members);

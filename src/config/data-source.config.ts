@@ -9,7 +9,7 @@ export const AppDataSource = new DataSource({
     username: 'root',
     password: '1234',
     database: 'chat',
-    synchronize: true,
+    synchronize: false,
     logging: true,
     entities: [Member, Chatroom]
 } as DataSourceOptions);
