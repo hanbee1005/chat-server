@@ -18,6 +18,11 @@ export const SocketService = (...args: ConstructorParameters<typeof Server>) => 
   io.on('connection', (socket) => {
     console.log(`[connection] ${socket.id}`);
 
+    socket.on('greeting', (greeting: string) => {
+      console.log(`${socket.id} greeting ${greeting}!!!`);
+      socket.broadcast.emit('greeting', greeting);
+    });
+
     RoomHandler(io, socket);
     ChatHandler(io, socket);
   });
