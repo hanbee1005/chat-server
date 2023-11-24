@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Timestamp } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, Timestamp } from "typeorm";
 import { Member } from "./member.entity";
+import { Role } from "./role.entity";
 
 @Entity('chatroom')
 export class Chatroom {
@@ -17,6 +18,20 @@ export class Chatroom {
 
     @Column({name: 'creator', readonly: true})
     creatorId: number
+
+    @ManyToMany(() => Role, {cascade: ['insert']})
+    @JoinTable({
+        name: 'chatroom_role',
+        joinColumn: {
+            name: 'chatroom',
+            referencedColumnName: 'id'
+        },
+        inverseJoinColumn: {
+            name: 'role',
+            referencedColumnName: 'id'
+        }
+    })
+    roles: Role[];
 
     @CreateDateColumn()
     createdAt: Timestamp;
