@@ -3,7 +3,7 @@ import cors from 'cors';
 import express, { Express, Request, Response } from 'express';
 import 'reflect-metadata';
 import {AppDataSource} from "@/config/data-source.config";
-import {SocketService} from "@/service/socket.service";
+import {SocketService} from "@/service/socket/socket.service";
 import {Member} from "@/entity/member.entity";
 import {MemberRepository} from "@/repository/member.repository";
 
