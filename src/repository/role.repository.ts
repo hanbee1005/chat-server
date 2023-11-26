@@ -17,6 +17,14 @@ export class RoleRepository {
         });
     }
 
+    findByName(name: 'ADMIN' | 'MEMBER') {
+        return this.roleRepository.find({
+            where: {
+                name
+            }
+        })
+    }
+
     saveAll(roles: Role[]) {
         return this.roleRepository.save(roles);
     }

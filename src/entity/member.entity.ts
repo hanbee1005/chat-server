@@ -26,7 +26,8 @@ export class Member {
     @CreateDateColumn()
     createdAt: Timestamp;
 
-    constructor(name: string) {
-        this.name = name
+    constructor(name: string, roles: Role[]) {
+        this.name = name;
+        this.roles = roles;
     }
 }

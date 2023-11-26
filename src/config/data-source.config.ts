@@ -7,7 +7,7 @@ export const AppDataSource = new DataSource({
   username: 'root',
   password: '1234',
   database: 'chat',
-  synchronize: false,
+  synchronize: true,
   logging: true,
   entities: ['src/entity/*.ts'],
 });

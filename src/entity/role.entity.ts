@@ -10,4 +10,8 @@ export class Role {
 
     @CreateDateColumn()
     createdAt: Timestamp;
+
+    constructor(name: 'ADMIN' | 'MEMBER') {
+        this.name = name
+    }
 }
