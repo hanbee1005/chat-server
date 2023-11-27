@@ -1,3 +1,4 @@
+import { Address } from "@/entity/address.entity";
 import { Member } from "@/entity/member.entity";
 import { Role } from "@/entity/role.entity";
 import { MemberRepository } from "@/repository/member.repository";
@@ -34,6 +35,8 @@ export class MemberService {
     async createMember(member: MemberCreateRepuest) {
         let findRole = await this.roleRepository.findByName(member.role);
         if (!findRole) findRole = new Role(member.role);
-        return new Member(member.name, [findRole]);
+        const newMember = new Member(member.name, [findRole]);
+        newMember.addAddress(member.addresses.map(address => new Address(address.zipcode, address.address)));
+        return newMember;
     }
 }

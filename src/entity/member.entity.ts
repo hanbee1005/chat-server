@@ -1,5 +1,6 @@
-import {Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, Timestamp} from "typeorm";
+import {Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, Timestamp} from "typeorm";
 import { Role } from "./role.entity";
+import { Address } from "./address.entity";
 
 @Entity('member')
 export class Member {
@@ -11,6 +12,10 @@ export class Member {
 
     @Column('varchar', { length: 4, nullable: true })
     mbti: string;
+
+    @OneToMany(() => Address, (address) => address.member, {cascade: ['insert']})
+    @JoinColumn({name: 'address', referencedColumnName: 'id'})
+    addresses: Address[]
 
     @ManyToMany(() => Role, {cascade: ['insert']})
     @JoinTable({
@@ -32,5 +37,9 @@ export class Member {
     constructor(name: string, roles: Role[]) {
         this.name = name;
         this.roles = roles;
+    }
+
+    addAddress(addresses: Address[]) {
+        this.addresses = addresses;
     }
 }

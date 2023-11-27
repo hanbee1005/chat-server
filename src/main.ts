@@ -49,7 +49,11 @@ AppDataSource.initialize().then(() => {
     // 초기 member 생성
     memberService.count().then(count => {
         if (count == 0) {
-            memberService.saveAll([{name: 'son', role: 'ADMIN'}, {name: 'kang', role: 'MEMBER'}, {name: 'choi', role: 'MEMBER'}]);
+            memberService.saveAll([
+                {name: 'son', role: 'ADMIN', addresses: [{zipcode: '12345', address: 'seoul'}]}, 
+                {name: 'kang', role: 'MEMBER', addresses: [{zipcode: '67890', address: 'gyeongju'}]}, 
+                {name: 'choi', role: 'MEMBER', addresses: [{zipcode: '54321', address: 'yangju'}]}
+            ]);
         }
     });
 });
