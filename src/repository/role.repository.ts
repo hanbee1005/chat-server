@@ -1,4 +1,3 @@
-import {Member} from "@/entity/member.entity";
 import {AppDataSource} from "@/config/data-source.config";
 import { Role } from "@/entity/role.entity";
 
@@ -18,11 +17,11 @@ export class RoleRepository {
     }
 
     findByName(name: 'ADMIN' | 'MEMBER') {
-        return this.roleRepository.find({
+        return this.roleRepository.findOne({
             where: {
                 name
             }
-        })
+        });
     }
 
     saveAll(roles: Role[]) {

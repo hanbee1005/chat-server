@@ -4,8 +4,6 @@ import express, { Express, Request, Response } from 'express';
 import 'reflect-metadata';
 import {AppDataSource} from "@/config/data-source.config";
 import {SocketService} from "@/service/socket/socket.service";
-import {Member} from "@/entity/member.entity";
-import {MemberRepository} from "@/repository/member.repository";
 import { MemberService } from './service/member.service';
 
 const app: Express = express()
@@ -17,7 +15,6 @@ const port = process.env.port || 8080;
 
 const httpServer = http.createServer(app);
 
-const memberRepository = new MemberRepository();
 const memberService = new MemberService();
 
 app.get('/', (req: Request, res: Response) => {
@@ -25,8 +22,8 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.get('/users', async (req: Request, res: Response) => {
-    const members = await memberRepository.findAll();
-    console.log(members)
+    const members = await memberService.findAll();
+    console.log(members);
     res.send(members);
 });
 
@@ -37,12 +34,12 @@ app.get('/rooms', async (req: Request, res: Response) => {
 // typeorm 초기화 후
 AppDataSource.initialize().then(() => {
     // http server 를 socket.io server 로 upgrade
-    // SocketService(httpServer, {
-    //     cors: {
-    //         origin: '*',
-    //         methods: '*',
-    //     },
-    // });
+    SocketService(httpServer, {
+        cors: {
+            origin: '*',
+            methods: '*',
+        },
+    });
 
     // http server 연결
     httpServer.listen(port, () => {
@@ -50,7 +47,7 @@ AppDataSource.initialize().then(() => {
     });
 
     // 초기 member 생성
-    memberRepository.count().then(count => {
+    memberService.count().then(count => {
         if (count == 0) {
             memberService.saveAll([{name: 'son', role: 'ADMIN'}, {name: 'kang', role: 'MEMBER'}, {name: 'choi', role: 'MEMBER'}]);
         }

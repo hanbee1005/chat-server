@@ -16,6 +16,10 @@ export class MemberRepository {
         });
     }
 
+    save(member: Member) {
+        return this.memberRepository.save(member);
+    }
+
     saveAll(member: Member[]) {
         return this.memberRepository.save(member);
     }

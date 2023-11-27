@@ -6,8 +6,8 @@ export const SocketService = (...args: ConstructorParameters<typeof Server>) => 
   const io = new Server(...args);
   RedisAdapter(io); // socket.io redis-adapter 연결
 
-  const RoomHandler = require('../service/handler/room.handler');
-  const ChatHandler = require('../service/handler/chat.handler');
+  const RoomHandler = require('../socket/handler/room.handler');
+  const ChatHandler = require('../socket/handler/chat.handler');
 
   io.use((socket, next) => {
     // 여기서 로그인 및 세션 확인...?

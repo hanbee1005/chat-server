@@ -9,6 +9,9 @@ export class Member {
     @Column('varchar', { length: 20 })
     name: string;
 
+    @Column('varchar', { length: 4, nullable: true })
+    mbti: string;
+
     @ManyToMany(() => Role, {cascade: ['insert']})
     @JoinTable({
         name: 'member_role',
