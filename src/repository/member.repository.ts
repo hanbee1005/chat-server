@@ -16,6 +16,10 @@ export class MemberRepository {
         });
     }
 
+    findById(id: Member['id']) {
+        return this.memberRepository.findOneBy({id});
+    }
+
     save(member: Member) {
         return this.memberRepository.save(member);
     }

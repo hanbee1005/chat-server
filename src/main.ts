@@ -31,6 +31,13 @@ app.get('/rooms', async (req: Request, res: Response) => {
 
 });
 
+app.patch('/member', async (req: Request, res: Response) => {
+    const request = req.body;
+    const result = memberService.updateMemberInfo(request);
+    console.log(result);
+    res.send(result);
+});
+
 // typeorm 초기화 후
 AppDataSource.initialize().then(() => {
     // http server 를 socket.io server 로 upgrade

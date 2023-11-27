@@ -42,4 +42,12 @@ export class Member {
     addAddress(addresses: Address[]) {
         this.addresses = addresses;
     }
+
+    updateMbti(mbti: string) {
+        this.mbti = mbti;
+    }
+
+    updateRoles(roles: Role[]) {
+        this.roles = roles;
+    }
 }

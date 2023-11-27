@@ -1,13 +1,15 @@
 import { Address } from "@/entity/address.entity";
 import { Member } from "@/entity/member.entity";
 import { Role } from "@/entity/role.entity";
+import { AddressRepository } from "@/repository/address.repository";
 import { MemberRepository } from "@/repository/member.repository";
 import { RoleRepository } from "@/repository/role.repository";
-import { MemberCreateRepuest } from "@/types/member.type";
+import { MemberCreateRepuest, MemberUpdateRequest } from "@/types/member.type";
 
 export class MemberService {
     private memberRepository = new MemberRepository();
     private roleRepository = new RoleRepository();
+    private addressRepository = new AddressRepository();
 
     constructor() {}
 
@@ -38,5 +40,28 @@ export class MemberService {
         const newMember = new Member(member.name, [findRole]);
         newMember.addAddress(member.addresses.map(address => new Address(address.zipcode, address.address)));
         return newMember;
+    }
+
+    async updateMemberInfo(request: MemberUpdateRequest) {
+        const member = await this.memberRepository.findById(request.memberId);
+        if (!member) throw new Error('member does not exist.');
+
+        if (request.mbti) member.updateMbti(request.mbti);
+
+        if (request.roles) {
+            const roles = await Promise.all(request.roles?.map(async role => await this.roleRepository.findByName(role)));
+            if (roles && !roles.includes(null)) {
+                // TODO: 여기부터 다시
+                // member.updateRoles(roles);
+            }
+        }
+
+        const address = request.address?.map(adr => new Address(adr.zipcode, adr.address));
+        if (address) {
+            this.addressRepository.deleteByMemberId(member.id);
+            this.addressRepository.saveAll(address);
+        }
+
+        return this.memberRepository.save(member);
     }
 }
