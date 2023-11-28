@@ -29,11 +29,11 @@ export class Member {
   @JoinTable({
     name: 'member_role',
     joinColumn: {
-      name: 'member',
+      name: 'member_id',
       referencedColumnName: 'id',
     },
     inverseJoinColumn: {
-      name: 'role',
+      name: 'role_id',
       referencedColumnName: 'id',
     },
   })
