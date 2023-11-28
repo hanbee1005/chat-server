@@ -94,7 +94,7 @@ export class MemberService {
 
       response = await memberRepo.save(member);
 
-      // throw new Error('강제 에러');
+      // throw new Error('강제 에러'); // transaction 확인용
 
       await runner.commitTransaction();
     } catch (error) {
