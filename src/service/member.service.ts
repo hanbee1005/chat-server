@@ -92,15 +92,15 @@ export class MemberService {
         .where('member_id = :memberId', { memberId: member.id })
         .execute();
 
-      throw new Error('강제 에러');
+      response = await memberRepo.save(member);
 
-      // response = await memberRepo.save(member);
+      // throw new Error('강제 에러');
 
       await runner.commitTransaction();
     } catch (error) {
-      console.log(error);
-      runner.rollbackTransaction();
-      return Promise.reject(error);
+        console.log(error);
+        await runner.rollbackTransaction();
+        return Promise.reject(error);
     } finally {
       runner.release();
     }

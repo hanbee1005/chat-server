@@ -33,8 +33,7 @@ app.get('/rooms', async (req: Request, res: Response) => {
 
 app.patch('/member', async (req: Request, res: Response) => {
     const request = req.body;
-    const result = memberService.updateMemberInfo(request);
-    console.log(result);
+    const result = await memberService.updateMemberInfo(request);
     res.send(result);
 });
 
