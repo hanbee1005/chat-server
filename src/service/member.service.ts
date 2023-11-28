@@ -1,3 +1,4 @@
+import { AppDataSource } from '@/config/data-source.config';
 import { Address } from '@/entity/address.entity';
 import { Member } from '@/entity/member.entity';
 import { Role } from '@/entity/role.entity';
@@ -61,20 +62,49 @@ export class MemberService {
           async role => await this.roleRepository.findByName(role),
         ),
       );
-      if (roles && !roles.includes(null)) {
-        // TODO: 여기부터 다시
-        // member.updateRoles(roles);
+
+      if (roles) {
+        member.roles = roles.filter(role => role !== null) as Role[];
       }
     }
 
-    const address = request.address?.map(
-      adr => new Address(adr.zipcode, adr.address),
-    );
-    if (address) {
-      this.addressRepository.deleteByMemberId(member.id);
-      this.addressRepository.saveAll(address);
+    if (request.address) {
+      const address = request.address?.map(
+        adr => new Address(adr.zipcode, adr.address),
+      );
+      if (address) member.addresses = address;
     }
 
-    return this.memberRepository.save(member);
+    let response: Member;
+
+    const runner = AppDataSource.createQueryRunner();
+    try {
+      await runner.connect();
+      await runner.startTransaction();
+
+      const addressRepo = runner.manager.getRepository(Address);
+      const memberRepo = runner.manager.getRepository(Member);
+
+      await addressRepo
+        .createQueryBuilder()
+        .delete()
+        .from(Address)
+        .where('member_id = :memberId', { memberId: member.id })
+        .execute();
+
+      throw new Error('강제 에러');
+
+      // response = await memberRepo.save(member);
+
+      await runner.commitTransaction();
+    } catch (error) {
+      console.log(error);
+      runner.rollbackTransaction();
+      return Promise.reject(error);
+    } finally {
+      runner.release();
+    }
+
+    return response;
   }
 }
